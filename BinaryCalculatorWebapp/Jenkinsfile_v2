@@ -65,5 +65,16 @@ spec:
         }
       }
     }
+	stage('Deploy') {
+		steps {
+			sh 'kubectl delete deployment binarycalculator-deployment'
+
+			sh 'kubectl create deployment binarycalculator-deployment --image northamerica-northeast2-docker.pkg.dev/binary-calculator-415820/bincalc/binarycalculator --port=8080' 
+
+			sh 'kubectl delete service binarycalculator-service'
+
+			sh 'kubectl expose deployment binarycalculator-deployment --type=LoadBalancer --name=binarycalculator-service' 
+		}
+	}
   }
 }
