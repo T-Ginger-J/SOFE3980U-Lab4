@@ -1,5 +1,6 @@
 pipeline {
   agent any
+
 environment {
         GCP_PROJECT_ID = 'binary-calculator-415820'
         GKE_CLUSTER_NAME = 'sofe3980u'
