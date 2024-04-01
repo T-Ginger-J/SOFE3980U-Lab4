@@ -28,6 +28,7 @@ environment {
     }
     stage ('Deploy') {
       steps {
+		script {
 		withCredentials([gcpServiceAccount(credentialsId: '115815541630736038885', project: "${GCP_PROJECT_ID}")]) {
 sh 'gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --zone ${GKE_ZONE} --project ${GCP_PROJECT_ID}'
 }
@@ -39,6 +40,7 @@ sh 'kubectl delete service binarycalculator-service'
 
 sh 'kubectl expose deployment binarycalculator-deployment --type=LoadBalancer --name=binarycalculator-service'
       }
+	}
     }
   }
 }
