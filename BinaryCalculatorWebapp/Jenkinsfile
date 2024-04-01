@@ -1,5 +1,11 @@
 pipeline {
   agent any
+environment {
+        GCP_PROJECT_ID = 'binary-calculator-415820'
+        GKE_CLUSTER_NAME = 'sofe3980u'
+        GKE_ZONE = 'northamerica-northeast2'
+        K8S_NAMESPACE = 'default'
+    }
   tools {
     maven 'maven' 
   }
@@ -22,6 +28,9 @@ pipeline {
     }
     stage ('Deploy') {
       steps {
+		withCredentials([gcpServiceAccount(credentialsId: '115815541630736038885', project: "${GCP_PROJECT_ID}")]) {
+sh 'gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --zone ${GKE_ZONE} --project ${GCP_PROJECT_ID}'
+}
         sh 'kubectl delete deployment binarycalculator-deployment'
 
 sh 'kubectl create deployment binarycalculator-deployment --image northamerica-northeast2-docker.pkg.dev/binary-calculator-415820/bincalc/binarycalculator --port=8080' 
